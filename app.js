@@ -25,10 +25,10 @@ function createKeyboardContainer(parentElement) {
   // Создаем строки клавиатуры
   const rows = [
     ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
-    ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
+    ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del'],
     ['CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
-    ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 'Shift'],
-    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', 'Ctrl']
+    ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\u2191', 'Shift'],
+    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', '\u2190', '\u2193', '\u2192',  'Ctrl']
   ];
 
   rows.forEach(keys => {
@@ -36,11 +36,20 @@ function createKeyboardContainer(parentElement) {
     row.classList.add('row');
     keyboardContainer.appendChild(row);
 
-    keys.forEach(key => {
+    keys.forEach((key, index) => {
       const button = document.createElement('button');
       button.innerText = key;
       button.classList.add('key');
+      button.classList.add(`key-${key}`);
       row.appendChild(button);
+
+      if (key === 'Shift') {
+        if (index === 0) {
+          button.classList.add('shift-left');
+        } else {
+          button.classList.add('shift-right');
+        }
+      }
     });
   });
 }
