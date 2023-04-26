@@ -50,6 +50,20 @@ function createKeyboardContainer(parentElement) {
           button.classList.add('shift-right');
         }
       }
+
+      button.addEventListener('click', () => {
+        let currentValue = input.value;
+
+        if (key === 'Backspace') {
+          currentValue = currentValue.slice(0, -1);
+        } else if (key === 'Enter') {
+          currentValue += '\n';
+        } else {
+          currentValue += key;
+        }
+
+        input.value = currentValue;
+      });
     });
   });
 }
