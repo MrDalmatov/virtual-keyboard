@@ -66,7 +66,25 @@ function createKeyboardContainer(parentElement) {
       });
     });
   });
+
+  document.addEventListener('keydown', (event) => {
+    let currentValue = input.value;
+    let keyPressed = event.key;
+
+
+    if (event.keyCode === 8) {
+      currentValue = currentValue.slice(0, -1);
+    } else if (event.keyCode === 13) {
+      currentValue += '\n';
+    } else {
+      currentValue += keyPressed;
+    }
+  
+    input.value = currentValue;
+  });
 }
+
+
 
 
 
