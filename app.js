@@ -16,11 +16,16 @@ function createKeyboardContainer(parentElement) {
   input.rows = '5';
   input.cols = '50';
   container.appendChild(input);
+  input.focus();
 
   // Создаем контейнер клавиатуры
   const keyboardContainer = document.createElement('div');
   keyboardContainer.classList.add('keyboard');
   container.appendChild(keyboardContainer);
+
+  keyboardContainer.addEventListener('mousedown', event => {
+    event.preventDefault();
+  });
 
   // Создаем строки клавиатуры
   const rows = [
@@ -28,7 +33,7 @@ function createKeyboardContainer(parentElement) {
     ['Tab', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\', 'Del'],
     ['CapsLock', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 'Enter'],
     ['Shift', 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '\u2191', 'Shift'],
-    ['Ctrl', 'Win', 'Alt', 'Space', 'Alt', '\u2190', '\u2193', '\u2192',  'Ctrl']
+    ['Ctrl', 'Alt', 'Cmd', 'Space', 'Cmd', '\u2190', '\u2193', '\u2192',  'Alt']
   ];
 
   rows.forEach(keys => {
@@ -40,7 +45,28 @@ function createKeyboardContainer(parentElement) {
       const button = document.createElement('button');
       button.innerText = key;
       button.classList.add('key');
-      button.classList.add(`key-${key}`);
+
+      if (key === ';') {
+        button.classList.add('key-Semicolon');
+      } else if (key === '=') {
+        button.classList.add('key-Equal');
+      } else if (key === '/') {
+        button.classList.add('key-Slash');
+      } else if (key === '[') {
+        button.classList.add('key-OpenBracket');
+      } else if (key === ']') {
+        button.classList.add('key-CloseBracket');
+      } else if (key === '\\') {
+        button.classList.add('key-Backslash');
+      } else if (key === '\'') {
+        button.classList.add('key-Apostrophe');
+      } else if (key === ',') {
+        button.classList.add('key-Comma');
+      } else if (key === '.') {
+        button.classList.add('key-Period');
+      } else {
+        button.classList.add(`key-${key}`);
+      }  
       row.appendChild(button);
 
       if (key === 'Shift') {
@@ -58,30 +84,84 @@ function createKeyboardContainer(parentElement) {
           currentValue = currentValue.slice(0, -1);
         } else if (key === 'Enter') {
           currentValue += '\n';
+        } else if  (key === 'Shift') {
+          toggleShift();
+        } else if (key === 'CapsLock') {
+          toggleCapslock();
         } else {
           currentValue += key;
         }
-
+        
+        
         input.value = currentValue;
       });
     });
   });
 
-  document.addEventListener('keydown', (event) => {
-    let currentValue = input.value;
-    let keyPressed = event.key;
-
-
-    if (event.keyCode === 8) {
-      currentValue = currentValue.slice(0, -1);
-    } else if (event.keyCode === 13) {
-      currentValue += '\n';
+  
+  document.addEventListener('keydown', event => {
+    const key = event.key;
+    let virtualKey;
+  
+    if (key === ';') {
+      virtualKey = document.querySelector('.key-Semicolon');
+    } else if (key === '/') {
+      virtualKey = document.querySelector('.key-Slash');
+    } else if (key === '=') {
+      virtualKey = document.querySelector('.key-Equal');
+    } else if (key === '[') {
+      virtualKey = document.querySelector('.key-OpenBracket');
+    } else if (key === ']') {
+      virtualKey = document.querySelector('.key-CloseBracket');
+    } else if (key === '\\') {
+      virtualKey = document.querySelector('.key-Backslash');
+    } else if (key === '\'') {
+      virtualKey = document.querySelector('.key-Apostrophe');
+    } else if (key === ',') {
+      virtualKey = document.querySelector('.key-Comma');
+    } else if (key === '.') {
+      virtualKey = document.querySelector('.key-Period');
     } else {
-      currentValue += keyPressed;
+      virtualKey = document.querySelector(`.key-${key}`);
     }
   
-    input.value = currentValue;
+    if (virtualKey) {
+      virtualKey.classList.add('active');
+    }
   });
+  
+  document.addEventListener('keyup', event => {
+    const key = event.key;
+    let virtualKey;
+  
+    if (key === ';') {
+      virtualKey = document.querySelector('.key-Semicolon');
+    } else if (key === '/') {
+      virtualKey = document.querySelector('.key-Slash');
+    } else if (key === '=') {
+      virtualKey = document.querySelector('.key-Equal');
+    } else if (key === '[') {
+      virtualKey = document.querySelector('.key-OpenBracket');
+    } else if (key === ']') {
+      virtualKey = document.querySelector('.key-CloseBracket');
+    } else if (key === '\\') {
+      virtualKey = document.querySelector('.key-Backslash');
+    } else if (key === '\'') {
+      virtualKey = document.querySelector('.key-Apostrophe');
+    } else if (key === ',') {
+      virtualKey = document.querySelector('.key-Comma');
+    } else if (key === '.') {
+      virtualKey = document.querySelector('.key-Period');
+    } else {
+      virtualKey = document.querySelector(`.key-${key}`);
+    }
+  
+    if (virtualKey) {
+      virtualKey.classList.remove('active');
+    }
+  });
+  
+
 }
 
 
